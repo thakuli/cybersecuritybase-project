@@ -1,5 +1,6 @@
 package sec.project.config;
 
+import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -20,18 +20,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // no real security at the moment
+        /* Orig code: no real security at the moment
+        
         http.authorizeRequests()
                 .anyRequest().permitAll();
+        */
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
+        
+        http.authorizeRequests()
+                .antMatchers("/h2-console/*").permitAll()
+                .anyRequest().authenticated();
+        http.formLogin()
+                .permitAll();        
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        //auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService); 
     }
 
-    @Bean
+    //@Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        System.out.println("taalla ollaan");
+        
+//        return new BCryptPasswordEncoder();
+        return new Base64PasswordEncoder();
     }
 }
