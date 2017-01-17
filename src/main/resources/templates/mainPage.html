@@ -5,16 +5,27 @@
     </head>
     <body>
 
-        <h1>This is the main page</h1>
-
+        <h2>Poor man's Facebook</h2>
+        
+        <h3>What is on your mind?</h3>
         <ul>
             <li th:each="status : ${statuses}">
                 <span th:text="${status}">status</span> 
             </li>
         </ul>
         
-        <h3>What is on your mind?</h3>
-
+        <h3>This is what your friends think:</h3>
+        <ul>
+            <li th:each="friend : ${friends}">
+                <span th:text="${friend.username}">user</span> 
+                <ul>
+                    <li th:each="status : ${friend.statuses}">
+                        <span th:text="${status}">status</span>    
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        
         <form action="#" th:action="@{/addstatus}" method="POST">
             <p><label for="status">Status:</label>: <input type="text" name="status" id="status"/></p>
             <p><input type="submit" value="Submit" /></p>

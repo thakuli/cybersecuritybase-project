@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package sec.project.controller;
 
 import java.util.ArrayList;
@@ -13,28 +18,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sec.project.config.CustomUserDetailsService;
 import sec.project.repository.SignupRepository;
 
+
+/**
+ *
+ * @author th567
+ */
 @Controller
-public class SignupController {
-
-    @Autowired
-    private SignupRepository signupRepository;
-
+public class LoginController {    
     @Autowired
     CustomUserDetailsService cuds;
     
-    private List<String> statuses;
-    
     @PostConstruct
     public void init() {
-        statuses = new ArrayList<>();
-        statuses.add("today is a good day");
-        statuses.add("cycling is good for your body");
     }    
-    @RequestMapping("*")
-    public String defaultMapping() {
-        return "redirect:/mainPage";
-    }
-
+    
     @RequestMapping(value = "/mylogin")
     public String myLogin(Model model,
                           @RequestParam(required = false) String username, 
@@ -51,25 +48,5 @@ public class SignupController {
             System.out.println("Invalid login");
             return "mylogin";
         }
-    }
-    
-    @RequestMapping(value = "/form", method = RequestMethod.GET)
-    public String loadForm() {
-        return "redirect:/mainPage";
-    }
-
-    @RequestMapping(value = "/mainPage", method = RequestMethod.GET)
-    public String mainPage(Model model) {
-        model.addAttribute("statuses", statuses);
-        return "mainPage";
-    }
-    
-    @RequestMapping(value = "/addstatus", method = RequestMethod.POST)
-    public String addStatus(Model model, @RequestParam String status) {
-        //signupRepository.save(new Signup(name, address));
-        //System.out.println("status={}"+status);
-        this.statuses.add(status);
-        model.addAttribute("statuses", statuses);
-        return "redirect:/mainPage";
-    }
+    }    
 }

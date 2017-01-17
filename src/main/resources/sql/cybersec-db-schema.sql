@@ -8,16 +8,25 @@
  * Created: 14-Jan-2017
  */
 
+-- DROP TABLE UserAccount;
+-- DROP TABLE Status;
+-- DROP TABLE Friends;
+
 CREATE TABLE IF NOT EXISTS UserAccount (
-    id varchar(9) PRIMARY KEY,
-    username varchar(200),
-    password varchar(200)
+    id varchar(9) PRIMARY KEY auto_increment,
+    username varchar(50),
+    password varchar(50)
 );
 
 CREATE TABLE IF NOT EXISTS Status (
-    id varchar(9) PRIMARY KEY,
+    id varchar(9) PRIMARY KEY auto_increment,
     message varchar(200),
-    creationTime TIMESTAMP,
-    username varchar(200)
+    userid varchar(50)
+    -- FOREIGN KEY(username) REFERENCES UserAccount(username)
+);
+
+CREATE TABLE IF NOT EXISTS Friends (
+    a_id varchar(9),
+    b_id varchar(9)
     -- FOREIGN KEY(username) REFERENCES UserAccount(username)
 );
