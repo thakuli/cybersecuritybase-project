@@ -8,8 +8,16 @@
  * Created: 14-Jan-2017
  */
 
-CREATE TABLE UserAccount (
+CREATE TABLE IF NOT EXISTS UserAccount (
     id varchar(9) PRIMARY KEY,
     username varchar(200),
     password varchar(200)
+);
+
+CREATE TABLE IF NOT EXISTS Status (
+    id varchar(9) PRIMARY KEY,
+    message varchar(200),
+    creationTime TIMESTAMP,
+    username varchar(200)
+    -- FOREIGN KEY(username) REFERENCES UserAccount(username)
 );

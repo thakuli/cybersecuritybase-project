@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Wall</title>
+        <title>This is the main page</title>
     </head>
     <body>
 
-        <h1>What is on your mind?</h1>
+        <h1>This is the main page</h1>
+
+        <ul>
+            <li th:each="status : ${statuses}">
+                <span th:text="${status}">status</span> 
+            </li>
+        </ul>
+        
+        <h3>What is on your mind?</h3>
 
         <form action="#" th:action="@{/addstatus}" method="POST">
             <p><label for="status">Status:</label>: <input type="text" name="status" id="status"/></p>
             <p><input type="submit" value="Submit" /></p>
         </form>
-
-        <p></p>
+        
+        <p> This is the end </p>
     </body>
 </html>

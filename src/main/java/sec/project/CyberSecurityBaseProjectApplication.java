@@ -12,13 +12,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CyberSecurityBaseProjectApplication {
-    private static void printWorkDirFiles() {
-        File dir = new File(".");
-        File[] filesList = dir.listFiles();
-        for (File file : filesList) {
-            if (file.isFile()) {
-                System.out.println(file.getName());
-            }
+    private static void loadSqlFile(Connection con, String file) {
+        try {
+            RunScript.execute(con, 
+                    new InputStreamReader(CyberSecurityBaseProjectApplication.class.getResourceAsStream(file)));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }    
 
@@ -26,20 +25,11 @@ public class CyberSecurityBaseProjectApplication {
         String databaseAddress = "jdbc:h2:file:./database";
         Connection connection = DriverManager.getConnection(databaseAddress, "sa", "");
 
-        try {
-            printWorkDirFiles();
-            // If database has not yet been created, insert content
-            //RunScript.execute(connection, new FileReader("sql/cybersec-db-schema.sql"));
-            //RunScript.execute(connection, new FileReader("sql/cybersec-db-default-data.sql"));
-            
-            System.out.println("Database initialization");
-            //RunScript.execute(connection, new InputStreamReader(CyberSecurityBaseProjectApplication.class.getResourceAsStream("/sql/cybersec-db-schema.sql")));
-            RunScript.execute(connection, new InputStreamReader(CyberSecurityBaseProjectApplication.class.getResourceAsStream("/sql/cybersec-db-default-data.sql")));
-        } catch (Throwable t) {
-            System.out.println("oho");
-            System.err.println(t.getMessage());
-        }        
-        
+        // If database has not yet been created, insert content
+        System.out.println("Database initialization");
+        loadSqlFile(connection, "/sql/cybersec-db-schema.sql");
+        loadSqlFile(connection, "/sql/cybersec-db-default-data.sql");
+                   
         SpringApplication.run(CyberSecurityBaseProjectApplication.class);
     }
 }

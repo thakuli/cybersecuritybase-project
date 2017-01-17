@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -27,7 +25,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     
     private String getUserPassFromDB(String username) 
     {
+        if (username == null)
+           throw new UsernameNotFoundException("oho");
         try (Connection con = DriverManager.getConnection(databaseAddress, "sa", "")){
+            // A1 Injection vulnerability
             String accountQuery = "select password from UserAccount where username = \'"+username+"\'";
             ResultSet rs = con.createStatement().executeQuery(accountQuery);
             
@@ -50,16 +51,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         // this data would typically be retrieved from a database
         this.accountDetails = new TreeMap<>();
         //this.accountDetails.put("ted", "$2a$06$rtacOjuBuSlhnqMO2GKxW.Bs8J6KI0kYjw/gtF0bfErYgFyNTZRDm");
-        this.accountDetails.put("ted", "GV2b25l");
+        //this.accountDetails.put("ted", "GV2b25l");
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        /* if (!this.accountDetails.containsKey(username)) {
-            throw new UsernameNotFoundException("No such user: " + username);
-        }
-        */
-
+                
         return new org.springframework.security.core.userdetails.User(
                 username,
                 //this.accountDetails.get(username),

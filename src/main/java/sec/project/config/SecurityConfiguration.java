@@ -32,7 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/*").permitAll()
                 .anyRequest().authenticated();
         http.formLogin()
-                .permitAll();        
+            //.loginPage("/mylogin")         
+            .permitAll();        
     }
 
     @Autowired
