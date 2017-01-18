@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -25,13 +26,6 @@ public class DBAPI {
     final static private String databaseAddress = "jdbc:h2:file:./database";
     private static Connection conn = null;
 
-    private static Friend createFriend(String user, List<String> statuses) {
-        Friend f = new Friend();
-        f.setUsername(user);
-        f.setStatuses(statuses);
-
-        return f;
-    }
 
     private static Connection getConnection() throws SQLException {
         if (conn == null) {
@@ -40,13 +34,13 @@ public class DBAPI {
         return conn; 
     }
     
-    private static ResultSet executeQuery(String sql) throws SQLException {
-        try (Connection con = DriverManager.getConnection(databaseAddress, "sa", "")) {
-            return con.createStatement().executeQuery(sql);
-        } catch (SQLException e) {
-            throw e;
-        }
-    }
+//    private static ResultSet executeQuery(String sql) throws SQLException {
+//        try (Connection con = DriverManager.getConnection(databaseAddress, "sa", "")) {
+//            return con.createStatement().executeQuery(sql);
+//        } catch (SQLException e) {
+//            throw e;
+//        }
+//    }
 
     private static List<String> getFriendsByUid(int uid) {
         String sql = "SELECT b_id from FRIENDS where a_id = '" + uid + "'";
@@ -67,7 +61,7 @@ public class DBAPI {
         return friendsList;
     }
 
-    private static List<String> getStatusesByUsername(String user) {
+    public static List<String> getStatusesByUsername(String user) {
         String sql = "SELECT message from STATUS where userid = '" + user + "'";
 
         List<String> statuses = new ArrayList<>();
@@ -80,6 +74,7 @@ public class DBAPI {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        statuses.forEach(System.out::println);
         return statuses;
     }
 
@@ -113,25 +108,34 @@ public class DBAPI {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        friendList.forEach((f) -> { System.out.println(f.getUsername()) ;});
         return friendList;
     }
 
     public static List<Friend> getFriendsByUser(String user) {
-//        List<Friend> friends = new ArrayList<>();
-//        friends.add(createFriend("kelly", Arrays.asList("hace frio", "fines es dificil")));
-//        friends.add(createFriend("tuomas", Arrays.asList("Oulu on kaupunki", "espanja on vaikeaa")));
-//        return friends;
-
         return getFriendsHelper(user);
     }
 
-    public static List<String> getStatusesByUser(String user) {
-        List<String> statuses = new ArrayList<>();
-        statuses.add("today is a good day");
-        statuses.add("cycling is good for your body");
-
-        return statuses;
+    public static void addUserStatus(String user, String status) {
+        try {
+            // INSERT INTO Status (id, message, userid) VALUES (1, 'Good day to ride a bike', 'tero');
+            String sql = "INSERT INTO STATUS (MESSAGE, USERID) VALUES ('"+status+"' , '"+user+"')";
+            System.out.println("*****sql={}".format(sql));
+            getConnection().createStatement().executeUpdate(sql);
+            getConnection().commit();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+    
+//    public static List<String> getStatusesByUser(String user) {
+//        List<String> statuses = new ArrayList<>();
+//        statuses.add("today is a good day");
+//        statuses.add("cycling is good for your body");
+//
+//        return statuses;
+//    }
 
     private static String getNameByUserId(String uid) {
         String sql = "SELECT username from UserAccount where id = '" + uid + "'";
@@ -149,4 +153,8 @@ public class DBAPI {
         return username;
 
     }        
+
+    public static List<Friend> searchFriends(String user, String friend) {
+        return getFriendsHelper(user).stream().filter(f -> f.getUsername().contains(friend)).collect(Collectors.toList());
+    }
 }

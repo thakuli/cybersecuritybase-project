@@ -21,23 +21,11 @@ import sec.project.repository.SignupRepository;
 public class MainPageController {
     @Autowired
     private HttpSession session;
-    
-    private List<String> statuses;
-    private List<Friend> friends;
-
-
-    private Friend createFriend(String user, List<String> statuses) {
-        Friend f = new Friend();
-        f.setUsername(user);
-        f.setStatuses(statuses);
         
-        return f;
-    }
-    
     @PostConstruct
     public void init() {
-        statuses = DBAPI.getStatusesByUser("tero");        
-        friends = DBAPI.getFriendsByUser("tero");
+//        statuses = DBAPI.getStatusesByUsername((String)session.getAttribute("user"));        
+//        friends = DBAPI.getFriendsByUser((String)session.getAttribute("user"));
     }    
     @RequestMapping("*")
     public String defaultMapping() {
@@ -53,17 +41,42 @@ public class MainPageController {
 
     @RequestMapping(value = "/mainPage", method = RequestMethod.GET)
     public String mainPage(Model model) {
-        model.addAttribute("statuses", statuses);
-        model.addAttribute("friends", friends);
+        System.out.println("session="+session.getAttribute("user"));
+        String user = (String)session.getAttribute("user");
+        
+        model.addAttribute("statuses",  DBAPI.getStatusesByUsername(user));
+        model.addAttribute("friends", DBAPI.getFriendsByUser(user));
+        model.addAttribute("user", user);
+        
         return "mainPage";
     }
     
     @RequestMapping(value = "/addstatus", method = RequestMethod.POST)
     public String addStatus(Model model, @RequestParam String status) {
-        //signupRepository.save(new Signup(name, address));
-        //System.out.println("status={}"+status);
-        this.statuses.add(status);
-        model.addAttribute("statuses", statuses);
+        System.out.println("koera");
+        //this.statuses.add(status);
+        String user = (String)session.getAttribute("user");
+        DBAPI.addUserStatus(user, status);
+        model.addAttribute("statuses", DBAPI.getStatusesByUsername(user));
+        model.addAttribute("user", user);
+        
         return "redirect:/mainPage";
     }
+
+    @RequestMapping(value = "/searchFriends", method = RequestMethod.GET)
+    public String searchFriendsGET(Model model) {
+     
+        return "searchFriends";
+    }  
+    
+    @RequestMapping(value = "/searchFriends", method = RequestMethod.POST)
+    public String searchFriendsPOST(Model model, @RequestParam String friend) {
+        String user = (String)session.getAttribute("user");
+        
+        List<Friend> friends = DBAPI.searchFriends(user, friend);
+        model.addAttribute("user", user);
+        model.addAttribute("friends", friends);
+        
+        return "searchFriends";
+    }    
 }

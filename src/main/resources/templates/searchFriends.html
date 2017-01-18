@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Wall</title>
+    </head>
+    <body>
+
+        <h3>Search Friends</h3>
+
+        <ul>
+            <li th:each="friend : ${friends}">
+                <span th:text="${friend.username}">friend</span> 
+            </li>
+        </ul>        
+        
+        <form action="#" th:action="@{/searchFriends}" method="POST">
+            <p><label for="status">Friend:</label>: <input type="text" name="friend" id="friend"/></p>
+            <p><input type="submit" value="Submit" /></p>
+        </form>
+
+        <p>
+            Return to mainPage
+            <a href="mainPage.html" th:href="@{/mainPage}">Click here.</a>        
+        </p>
+    </body>
+</html>

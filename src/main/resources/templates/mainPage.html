@@ -7,7 +7,7 @@
 
         <h2>Poor man's Facebook</h2>
         
-        <h3>What is on your mind?</h3>
+        <h3>What is on your mind, <span th:text="${user}">user</span>? </h3>
         <ul>
             <li th:each="status : ${statuses}">
                 <span th:text="${status}">status</span> 
@@ -31,6 +31,12 @@
             <p><input type="submit" value="Submit" /></p>
         </form>
         
+        <p>Looking for friends?
+            <a href="searchFriends.html" th:href="@{/searchFriends}">Click here.</a>        
+        </p>
+        
+<!-- Will produce 'http://localhost:8080/gtvg/order/details?orderId=3' (plus rewriting) -->
+
         <p> This is the end </p>
     </body>
 </html>

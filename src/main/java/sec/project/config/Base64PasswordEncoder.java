@@ -16,7 +16,8 @@ public class Base64PasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence cs) {
-        String encoded = Base64.getEncoder().encodeToString(cs.toString().getBytes());
+        //String encoded = Base64.getEncoder().encodeToString(cs.toString().getBytes());
+        String encoded = cs.toString();
         System.out.println("Encode: input={}, output={}".format(cs.toString(), encoded));
         return encoded;
     }

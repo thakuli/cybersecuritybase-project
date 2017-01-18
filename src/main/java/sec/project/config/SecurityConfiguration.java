@@ -1,6 +1,7 @@
 package sec.project.config;
 
 import java.util.Base64;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    @Autowired 
+    CustomUserDetailsService cuds;
 
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         /* Orig code: no real security at the moment
@@ -39,7 +44,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         //auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        auth.userDetailsService(userDetailsService); 
+        //auth.userDetailsService(userDetailsService); 
+        auth.userDetailsService(cuds).passwordEncoder(passwordEncoder()); 
+
     }
 
     //@Bean

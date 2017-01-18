@@ -10,6 +10,8 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+    
+    @Autowired
+    HttpSession session;
 
     final private String databaseAddress = "jdbc:h2:file:./database";
     private Map<String, String> accountDetails;
@@ -56,8 +61,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                
-        return new org.springframework.security.core.userdetails.User(
+        System.out.println("loading user "+username);
+        UserDetails ud = new org.springframework.security.core.userdetails.User(
                 username,
                 //this.accountDetails.get(username),
                 getUserPassFromDB(username),
@@ -66,5 +71,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 Arrays.asList(new SimpleGrantedAuthority("USER")));
+        session.setAttribute("user", username);
+        return ud;
     }
 }
