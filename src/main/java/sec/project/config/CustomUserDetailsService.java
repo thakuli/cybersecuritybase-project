@@ -25,8 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     HttpSession session;
 
     final private String databaseAddress = "jdbc:h2:file:./database";
-    private Map<String, String> accountDetails;
-
     
     private String getUserPassFromDB(String username) 
     {
@@ -53,10 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     
     @PostConstruct
     public void init() {
-        // this data would typically be retrieved from a database
-        this.accountDetails = new TreeMap<>();
-        //this.accountDetails.put("ted", "$2a$06$rtacOjuBuSlhnqMO2GKxW.Bs8J6KI0kYjw/gtF0bfErYgFyNTZRDm");
-        //this.accountDetails.put("ted", "GV2b25l");
+
     }
 
     @Override
@@ -64,7 +59,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.println("loading user "+username);
         UserDetails ud = new org.springframework.security.core.userdetails.User(
                 username,
-                //this.accountDetails.get(username),
                 getUserPassFromDB(username),
                 true,
                 true,

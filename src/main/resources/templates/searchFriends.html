@@ -6,10 +6,10 @@
     <body>
 
         <h3>Search Friends</h3>
-
+        
         <ul>
             <li th:each="friend : ${friends}">
-                <span th:text="${friend.username}">friend</span> 
+                <a th:href="@{addNewFriend(new_friend=${friend})}"><span th:text="${friend}">friend</span></a>
             </li>
         </ul>        
         
@@ -18,8 +18,10 @@
             <p><input type="submit" value="Submit" /></p>
         </form>
 
+                <div>Click a person name to add him/her to your friends...</div>
+        <br/>
         <p>
-            Return to mainPage
+            Return to main page:
             <a href="mainPage.html" th:href="@{/mainPage}">Click here.</a>        
         </p>
     </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>This is the main page</title>
+        <title>Poor man's Facebook</title>
     </head>
     <body>
 
@@ -13,6 +13,11 @@
                 <span th:text="${status}">status</span> 
             </li>
         </ul>
+        
+        <form action="#" th:action="@{/addstatus}" method="POST">
+            <p><label for="status">Status:</label>: <input type="text" name="status" id="status"/></p>
+            <p><input type="submit" value="Submit" /></p>
+        </form>
         
         <h3>This is what your friends think:</h3>
         <ul>
@@ -26,17 +31,13 @@
             </li>
         </ul>
         
-        <form action="#" th:action="@{/addstatus}" method="POST">
-            <p><label for="status">Status:</label>: <input type="text" name="status" id="status"/></p>
-            <p><input type="submit" value="Submit" /></p>
-        </form>
-        
-        <p>Looking for friends?
+        <p><big>Looking</big> for friends?
             <a href="searchFriends.html" th:href="@{/searchFriends}">Click here.</a>        
         </p>
         
-<!-- Will produce 'http://localhost:8080/gtvg/order/details?orderId=3' (plus rewriting) -->
-
-        <p> This is the end </p>
+        <hr />
+        <p> 
+            Cyber Security Base / Course Project I  / <a href="mailto:tero.hakuli@iki.fi">Tero Hakuli</a> 
+        </p>
     </body>
 </html>

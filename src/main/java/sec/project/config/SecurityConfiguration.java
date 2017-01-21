@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -25,20 +26,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /* Orig code: no real security at the moment
-        
-        http.authorizeRequests()
-                .anyRequest().permitAll();
-        */
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
         
         http.authorizeRequests()
                 .antMatchers("/h2-console/*").permitAll()
-                .anyRequest().authenticated();
-        http.formLogin()
-            //.loginPage("/mylogin")         
-            .permitAll();        
+                .anyRequest().authenticated()
+                    .and()
+                .formLogin()
+                    //.loginPage("/login")               
+                    .permitAll();        
     }
 
     @Autowired
@@ -49,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
-    //@Bean
+    @Bean
     public PasswordEncoder passwordEncoder() {
         System.out.println("taalla ollaan");
         

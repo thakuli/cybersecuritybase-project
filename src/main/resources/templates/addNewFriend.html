@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>new friends</title>
+    </head>
+    <body>
+        <h3>You are having new friends... </h3>
+        <div th:switch="${friendAdded}">
+            <p th:case="'true'">You, <span th:text="${user}" /> are now friends with <span th:text="${friend}" /></p>
+            <p th:case="'false'">You, <span th:text="${user}" /> are already a friend with <span th:text="${friend}" /></p>
+        </div>
+        <p>
+            Return to main page:
+            <a href="mainPage.html" th:href="@{/mainPage}">Click here.</a>        
+        </p>
+    </body>
+</html>

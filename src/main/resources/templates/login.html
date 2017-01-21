@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>My login page</title>
+        <title>Poor man's Facebook login page</title>
     </head>
     <body>
 
-        <h1>Welcome to my app</h1>
-        <c:url value="/mylogin" var="loginUrl"/>
+        <h1>Welcome to Poor man's Facebook</h1>
+        <c:url value="/login" var="loginUrl"/>
         <form action="${loginUrl}" method="post">       
                 <c:if test="${param.error != null}">        
                         <p>

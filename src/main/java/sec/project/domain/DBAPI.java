@@ -10,11 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 /**
@@ -34,14 +30,6 @@ public class DBAPI {
         return conn; 
     }
     
-//    private static ResultSet executeQuery(String sql) throws SQLException {
-//        try (Connection con = DriverManager.getConnection(databaseAddress, "sa", "")) {
-//            return con.createStatement().executeQuery(sql);
-//        } catch (SQLException e) {
-//            throw e;
-//        }
-//    }
-
     private static List<String> getFriendsByUid(int uid) {
         String sql = "SELECT b_id from FRIENDS where a_id = '" + uid + "'";
 
@@ -74,7 +62,6 @@ public class DBAPI {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        statuses.forEach(System.out::println);
         return statuses;
     }
 
@@ -108,7 +95,6 @@ public class DBAPI {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        friendList.forEach((f) -> { System.out.println(f.getUsername()) ;});
         return friendList;
     }
 
@@ -118,9 +104,7 @@ public class DBAPI {
 
     public static void addUserStatus(String user, String status) {
         try {
-            // INSERT INTO Status (id, message, userid) VALUES (1, 'Good day to ride a bike', 'tero');
             String sql = "INSERT INTO STATUS (MESSAGE, USERID) VALUES ('"+status+"' , '"+user+"')";
-            System.out.println("*****sql={}".format(sql));
             getConnection().createStatement().executeUpdate(sql);
             getConnection().commit();
             
@@ -129,13 +113,6 @@ public class DBAPI {
         }
     }
     
-//    public static List<String> getStatusesByUser(String user) {
-//        List<String> statuses = new ArrayList<>();
-//        statuses.add("today is a good day");
-//        statuses.add("cycling is good for your body");
-//
-//        return statuses;
-//    }
 
     private static String getNameByUserId(String uid) {
         String sql = "SELECT username from UserAccount where id = '" + uid + "'";
@@ -153,8 +130,38 @@ public class DBAPI {
         return username;
 
     }        
+    
+    public static List<String> getUsersByName(String username) {
+        String sql = "SELECT username FROM UserAccount WHERE username LIKE  '%" + username + "%'";
 
+        List<String> users = new ArrayList<>();
+        try {
+            ResultSet rs = getConnection().createStatement().executeQuery(sql);
+
+            while (rs.next()) {
+                users.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;        
+    }
+    
     public static List<Friend> searchFriends(String user, String friend) {
         return getFriendsHelper(user).stream().filter(f -> f.getUsername().contains(friend)).collect(Collectors.toList());
+    }
+
+    public static void addNewFriend(String user, String new_friend) {
+        try {
+            int a_id = DBAPI.getUidByUsername(user);
+            int b_id = DBAPI.getUidByUsername(new_friend);
+
+            String sql = "INSERT INTO FRIENDS (a_id, b_id) VALUES ('"+a_id+"' , '"+b_id+"')";
+            getConnection().createStatement().executeUpdate(sql);
+            getConnection().commit();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
