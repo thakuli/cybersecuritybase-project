@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Wall</title>
+        <title>Search friends</title>
     </head>
     <body>
 
@@ -9,7 +9,7 @@
         
         <ul>
             <li th:each="friend : ${friends}">
-                <a th:href="@{addNewFriend(new_friend=${friend})}"><span th:text="${friend}">friend</span></a>
+                <a th:href="@{addNewFriend(user=${user},new_friend=${friend})}"><span th:text="${friend}">friend</span></a>
             </li>
         </ul>        
         

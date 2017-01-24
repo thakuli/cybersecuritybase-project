@@ -30,7 +30,6 @@ public class MainPageController {
 
     @RequestMapping(value = "/mainPage", method = RequestMethod.GET)
     public String mainPage(Model model) {
-        System.out.println("session="+session.getAttribute("user"));
         String user = (String)session.getAttribute("user");
         
         model.addAttribute("statuses",  DBAPI.getStatusesByUsername(user));
@@ -52,22 +51,22 @@ public class MainPageController {
 
     @RequestMapping(value = "/searchFriends", method = RequestMethod.GET)
     public String searchFriendsGET(Model model) {
+        model.addAttribute("user", (String)session.getAttribute("user"));
      
         return "/searchFriends";
     }  
     
     @RequestMapping(value = "/searchFriends", method = RequestMethod.POST)
     public String searchFriendsPOST(Model model, @RequestParam String friend) {
-        List<String> friends = DBAPI.getUsersByName(friend);
-        model.addAttribute("friends", friends);
+        
+        model.addAttribute("friends", DBAPI.getUsersByName(friend));
+        model.addAttribute("user", (String)session.getAttribute("user"));
         
         return "/searchFriends";
     }
 
     @RequestMapping(value = "/addNewFriend", method = RequestMethod.GET)
-    public String addNewFriendPOST(Model model, @RequestParam String new_friend) {
-        String user = (String)session.getAttribute("user");
-        
+    public String addNewFriendPOST(Model model, @RequestParam String user, @RequestParam String new_friend) {
         List<Friend> friends = DBAPI.getFriendsByUser(user);
         model.addAttribute("user", user);
         model.addAttribute("friend", new_friend);

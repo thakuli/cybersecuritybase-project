@@ -1,8 +1,5 @@
 package sec.project;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CyberSecurityBaseProjectApplication {
     private static void loadSqlFile(Connection con, String file) {
         try {
+            System.out.println("Executing sql file {}".format(file));
             RunScript.execute(con, 
                     new InputStreamReader(CyberSecurityBaseProjectApplication.class.getResourceAsStream(file)));
         } catch (Exception e) {
@@ -29,7 +27,8 @@ public class CyberSecurityBaseProjectApplication {
         System.out.println("Database initialization");
         loadSqlFile(connection, "/sql/cybersec-db-schema.sql");
         loadSqlFile(connection, "/sql/cybersec-db-default-data.sql");
-                   
+        System.out.println("Database initialized");           
+        
         SpringApplication.run(CyberSecurityBaseProjectApplication.class);
     }
 }

@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private String getUserPassFromDB(String username) 
     {
         if (username == null)
-           throw new UsernameNotFoundException("oho");
+           throw new UsernameNotFoundException("User name not given");
         try (Connection con = DriverManager.getConnection(databaseAddress, "sa", "")){
             // A1 Injection vulnerability
             String accountQuery = "select password from UserAccount where username = \'"+username+"\'";
