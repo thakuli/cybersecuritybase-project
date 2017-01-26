@@ -52,6 +52,7 @@ string is accepted as a password.
 
 **How to produce:**
 An attacker might be to fetch the passwords from the database by using the sql injection vulnerability.
+
 1. The passwords are defined in the file cybersec-db-default-data.sql
 
 **Solution:**
@@ -68,7 +69,7 @@ the injected html would be rendered as html code and it would enable xss attack.
 **How to produce:**
 
 1. Login to the application
-2. Type <h1>headline</h1> to Status
+2. Type `<h1>headline</h1>` to Status
 3. The html is displayed to the screen. Thymeleaf does not render this as html, so this is not actually a vulnerability
 
 
