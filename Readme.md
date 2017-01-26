@@ -31,14 +31,14 @@ All the database requests are vulnerable for the SQL Injection attacks, because
 they generate the SQL staments by concatinating the input values directly to the
 sql string without validating the input.
 For example, 
-class DBAPI {
+`class DBAPI {
   private static List<String> getFriendsByUid(int uid) {
     String sql = "SELECT b_id from FRIENDS where a_id = '" + uid + "'";
-}
+}`
 
 **How to produce:**
 1. Open the Login screen: http://localhost:8080
-2. Type as username: myaccount' and foobar like '%
+2. Type as username: `myaccount' and foobar like '%`
 3. Verify from the application console that a sql syntax error exception is thrown
 
 **Solution:**
@@ -54,7 +54,7 @@ string is accepted as a password.
 An attacker might be to fetch the passwords from the database by using the sql injection vulnerability.
 1. The passwords are defined in the file cybersec-db-default-data.sql
 
-**Solution: **
+**Solution:**
 Encrypt the passwords in the identity provider by using using strong encryption libraries.
 
 
@@ -66,6 +66,7 @@ at this point. If the user values would later be rendered without validation, th
 the injected html would be rendered as html code and it would enable xss attack.
 
 **How to produce:**
+
 1. Login to the application
 2. Type <h1>headline</h1> to Status
 3. The html is displayed to the screen. Thymeleaf does not render this as html, so this is not actually a vulnerability
@@ -76,6 +77,7 @@ An authenticated user can add friends to another users by generating a POST requ
 with victims username and a new friend.
 
 **How to produce:**
+
 1. Login to application as tero / tampere with browser 1
 2. Login to application as kelly / caracas with browser 2
 3. With browser 2 execute the following request: http://localhost:8080/addNewFriend?user=tero&new_friend=lemmy
@@ -90,6 +92,7 @@ Application is vulnerable for the SQL injection attacks and the passwords are pl
 An attacker might be able to get the passwords using a well crafted SQL statement.
 
 **How to produce:**
+
 1. The passwords are defined in the file cybersec-db-default-data.sql
 
 
@@ -97,11 +100,12 @@ An attacker might be able to get the passwords using a well crafted SQL statemen
 The application developer has stupidly disabled the CSRF protection.
 
 **How to produce:**
+
 1. Login to the application as kelly / caracas
 2. Go away from the site ( e.g. http://www.mooc.fi)
 3. Open the url http://localhost:8080/addNewFriend?user=tero&new_friend=lemmy
 4. The mooc.fi could have had the above malicious link and you may have accidentally clicked that one => CSRF attack 
 
 **Solution:**
-Enable the CSRF protection. The this line from SecurityConfiguration.java: http.csrf().disable();
+Enable the CSRF protection. The this line from SecurityConfiguration.java: `http.csrf().disable();`
 
