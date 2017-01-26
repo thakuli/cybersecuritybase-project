@@ -9,15 +9,15 @@ friend's statuses. They can also search other users and they can add them to the
 friend list.
 
 The following users are created by default (user / password):
-tero / tampere
-tuomas / oulu
-kelly / caracas
-lemmy / losangeles
-henkka / seattle
-robert / london
-jimmy / london
-john_paul / countryside
 
+- tero / tampere
+- tuomas / oulu
+- kelly / caracas
+- lemmy / losangeles
+- henkka / seattle
+- robert / london
+- jimmy / london
+- john_paul / countryside
 
 ### How to start the application
 The application is written in Java and it has been developed with NetBeans. Using this IDE
