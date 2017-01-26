@@ -59,8 +59,13 @@ public class MainPageController {
     @RequestMapping(value = "/searchFriends", method = RequestMethod.POST)
     public String searchFriendsPOST(Model model, @RequestParam String friend) {
         
-        model.addAttribute("friends", DBAPI.getUsersByName(friend));
+        List<String> friends = DBAPI.getUsersByName(friend);
+        model.addAttribute("friends", friends);
         model.addAttribute("user", (String)session.getAttribute("user"));
+        if (friends.isEmpty()) {
+            model.addAttribute("userSearch", friend);
+            model.addAttribute("notFound", true);
+        }
         
         return "/searchFriends";
     }

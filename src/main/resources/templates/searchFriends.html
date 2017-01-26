@@ -13,6 +13,10 @@
             </li>
         </ul>        
         
+        <div th:if="${notFound} == true">
+            <p>User <span th:text="${userSearch}">friend</span> not found... Sorry. </p>
+        </div>
+        
         <form action="#" th:action="@{/searchFriends}" method="POST">
             <p><label for="status">Friend:</label>: <input type="text" name="friend" id="friend"/></p>
             <p><input type="submit" value="Submit" /></p>
