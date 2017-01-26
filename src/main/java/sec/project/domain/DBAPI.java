@@ -5,12 +5,16 @@
  */
 package sec.project.domain;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -133,17 +137,20 @@ public class DBAPI {
     
     public static List<String> getUsersByName(String username) {
         String sql = "SELECT username FROM UserAccount WHERE username LIKE  '%" + username + "%'";
-
         List<String> users = new ArrayList<>();
-        try {
-            ResultSet rs = getConnection().createStatement().executeQuery(sql);
-
-            while (rs.next()) {
-                users.add(rs.getString(1));
+        
+        ResultSet rs = null;
+        try (Statement stmt = getConnection().createStatement()) {
+            if (stmt.execute(sql)) {
+                rs = stmt.getResultSet();   
+                while (rs.next()) {
+                    users.add(rs.getString(1));
+                }
             }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        } 
         return users;        
     }
     

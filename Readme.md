@@ -51,12 +51,15 @@ All the passwords are plain text encoded in the database. There is no password p
 string is accepted as a password.
 
 **How to produce:**
-An attacker might be to fetch the passwords from the database by using the sql injection vulnerability.
+An attacker might be to crack the passwords by using the known passwords list such as this one: 
+https://github.com/danielmiessler/SecLists/blob/master/Passwords/10k_most_common.txt
 
-1. The passwords are defined in the file cybersec-db-default-data.sql
+
+1. Kelly's password caracas can be found the above list.
 
 **Solution:**
-Encrypt the passwords in the identity provider by using using strong encryption libraries.
+Encrypt the passwords in the identity provider by using using strong encryption libraries and 
+define a good password policy.
 
 
 #### (3) A3 Cross-Site Scripting (XSS)
@@ -70,7 +73,7 @@ the injected html would be rendered as html code and it would enable xss attack.
 
 1. Login to the application
 2. Type `<h1>headline</h1>` to Status
-3. The html is displayed to the screen. Thymeleaf does not render this as html, so this is not actually a vulnerability
+3. The html code is displayed to the screen. Thymeleaf does not render this as html, so this is not a severe vulnerability.
 
 
 #### (4) A7 Missing Function Level Access Control
@@ -85,7 +88,7 @@ with victims username and a new friend.
 4. Tero is now friends with lemmy. Open the main page with browser 1
 
 **Solution:**
-Do not add user's name to the POST request. 
+Do not add user's name to the POST request. Validate the HTTP Session.
 
 
 #### (5) A6 Sensitive Data Exposure
@@ -95,6 +98,12 @@ An attacker might be able to get the passwords using a well crafted SQL statemen
 **How to produce:**
 
 1. The passwords are defined in the file cybersec-db-default-data.sql
+2. Open the search friends page
+3. Type the following string to the search field `aaaaabbbb%' union select password from UserAccount where password like '%_`
+4. All the passwords from the database are displayed to the screen
+
+**Solution:**
+Use prepared statements and encode passwords in the database.
 
 
 #### (6) A8 Cross-Site Request Forgery (CSRF)
