@@ -10,7 +10,7 @@
         <h3>What is on your mind, <span th:text="${user}">user</span>? </h3>
         <ul>
             <li th:each="status : ${statuses}">
-                <span th:text="${status}">status</span> 
+                <span th:utext="${status}">status</span> 
             </li>
         </ul>
         

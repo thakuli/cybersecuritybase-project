@@ -37,6 +37,7 @@ For example,
 }`
 
 **How to produce:**
+
 1. Open the Login screen: http://localhost:8080
 2. Type as username: `myaccount' and foobar like '%`
 3. Verify from the application console that a sql syntax error exception is thrown
@@ -63,17 +64,19 @@ define a good password policy.
 
 
 #### (3) A3 Cross-Site Scripting (XSS)
-The application does to validate the user input at all and it passes some input values 
-directly to the Thymeleaf framework to render html page. Luckily, the Thymeleaf
-does renders the injected html input as texts, so this is not severe vulnerability
-at this point. If the user values would later be rendered without validation, then
-the injected html would be rendered as html code and it would enable xss attack.
+Updated 28.1.2017
+The application does not validate the user input at all and it passes some input values 
+directly to the Thymeleaf framework to render html page. 
 
 **How to produce:**
 
 1. Login to the application
 2. Type `<h1>headline</h1>` to Status
-3. The html code is displayed to the screen. Thymeleaf does not render this as html, so this is not a severe vulnerability.
+3. The html code is rendered to the screen. 
+
+**Solution:**
+The statuses are rendered using Thymeleaf's `th:utext` -element and this does not format the text. 
+In the other parts of the application the `th:text` is used and this formats the input and solves the XSS vulnerability.
 
 
 #### (4) A7 Missing Function Level Access Control
@@ -88,7 +91,7 @@ with victims username and a new friend.
 4. Tero is now friends with lemmy. Open the main page with browser 1
 
 **Solution:**
-Do not add user's name to the POST request. Validate the HTTP Session.
+Do not add sensitive information to the HTTP request. Validate the HTTP Session.
 
 
 #### (5) A6 Sensitive Data Exposure
@@ -117,5 +120,5 @@ The application developer has stupidly disabled the CSRF protection.
 4. The mooc.fi could have had the above malicious link and you may have accidentally clicked that one => CSRF attack 
 
 **Solution:**
-Enable the CSRF protection. The this line from SecurityConfiguration.java: `http.csrf().disable();`
+Enable the CSRF protection. Remove this line from SecurityConfiguration.java: `http.csrf().disable();`
 
