@@ -1,4 +1,4 @@
-# Cybersecurity Project work 1 - Tero Hakuli
+# Cybersecurity Project work 1 - thakuli
 
 https://cybersecuritybase.github.io/project/ 
 
